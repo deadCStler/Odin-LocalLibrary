@@ -8,12 +8,11 @@ const ejsLayout = require("express-ejs-layouts");
 const compression = require("compression");
 const helmet = require("helmet");
 const RateLimit = require("express-rate-limit");
-const env = require("dotenv").config();
+require("dotenv").config();
 //setup for mongoose
 mongoose.set("strictQuery", false);
 
-const mongoDB =
-  "mongodb+srv://deadcstler:chinu0112@cluster0.n3nvaao.mongodb.net/odin_local_library?retryWrites=true&w=majority&appName=Cluster0";
+const mongoDB = process.env.MONGODB_URI;
 
 const main = async () => {
   await mongoose.connect(mongoDB);
