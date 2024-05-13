@@ -1,0 +1,36 @@
+<h1><%= locals.title %>:</h1>
+<p>
+  <strong>Title: </strong>
+  <a href="<%= bookinstance.book.url %>"><%= bookinstance.book.title %></a>
+</p>
+<p><strong>Imprint:</strong> <%= bookinstance.imprint %></p>
+
+<p>
+  <strong>Status: </strong>
+  <% if (bookinstance.status == 'Available') { %>
+  <span class="text-success"><%= bookinstance.status %></span>
+  <% } else if (bookinstance.status == 'Maintenance') { %>
+  <span class="text-danger"><%= bookinstance.status %></span>
+  <% } else { %>
+  <span class="text-warning"><%= bookinstance.status %></span>
+  <% } %>
+</p>
+
+<% if (bookinstance.status != 'Available') { %>
+<p><strong>Due back:</strong> <%= bookinstance.due_back_formatted %></p>
+<hr />
+<% } %>
+
+<p>Do you really want to delete this Book Instance?</p>
+<form method="POST">
+  <div class="form-group">
+    <input
+      id="bookinstanceid"
+      class="form-control"
+      type="hidden"
+      name="bookinstanceid"
+      value="<%= bookinstance._id %>"
+    />
+  </div>
+  <button class="btn btn-primary" type="submit">Delete</button>
+</form>

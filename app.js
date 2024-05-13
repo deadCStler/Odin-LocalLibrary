@@ -5,8 +5,13 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const ejsLayout = require("express-ejs-layouts");
+const compression = require("compression");
+const helmet = require("helmet");
+const RateLimit = require("express-rate-limit");
+const env = require("dotenv").config();
 //setup for mongoose
 mongoose.set("strictQuery", false);
+
 const mongoDB =
   "mongodb+srv://deadcstler:chinu0112@cluster0.n3nvaao.mongodb.net/odin_local_library?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -20,15 +25,30 @@ var usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
 var app = express();
 
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(limiter);
 app.use(ejsLayout);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(compression);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
