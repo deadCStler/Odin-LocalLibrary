@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+const ejsLayout = require("express-ejs-layouts");
 //setup for mongoose
 mongoose.set("strictQuery", false);
 const mongoDB =
@@ -24,6 +24,7 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(ejsLayout);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
